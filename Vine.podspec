@@ -1,8 +1,9 @@
 Pod::Spec.new do |s|
   s.name         = "Vine"
   s.version      = "1.0.0-alpha.1"
-  s.summary      = ""
+  s.summary      = "Minimal Flux State Store"
   s.description  = <<-DESC
+  A library minimal Flux architesture.
                    DESC
   s.license      = "MIT"
   s.author             = { "Muukii" => "muukii.app@gmail.com  " }
