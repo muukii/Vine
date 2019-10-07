@@ -80,13 +80,13 @@ extension StateNodeType {
     _ file: StaticString = #file,
     _ function: StaticString = #function,
     _ line: UInt = #line,
-    _ action: (StateNodeDispatchContext<Self>) -> ReturnType
-  ) -> ReturnType {
+    _ action: (StateNodeDispatchContext<Self>) throws -> ReturnType
+  ) rethrows -> ReturnType {
     
     let metadata = ActionMetadata(name: name, file: file, function: function, line: line)
     
     let context = StateNodeDispatchContext<Self>.init(store: self)
-    let result = action(context)
+    let result = try action(context)
     logger?.didDispatch(store: self, state: state, action: metadata)
     return result
     
@@ -97,8 +97,8 @@ extension StateNodeType {
     _ file: StaticString = #file,
     _ function: StaticString = #function,
     _ line: UInt = #line,
-    _ mutation: (inout UsingState) -> Void
-  ) {
+    _ mutation: (inout UsingState) throws -> Void
+  ) rethrows {
     
     let metadata = MutationMetadata(name: name, file: file, function: function, line: line)
     
@@ -107,8 +107,8 @@ extension StateNodeType {
       logger?.didCommit(store: self, state: state, mutation: metadata)
     }
     
-    storage.update { (state) in
-      mutation(&state)
+    try storage.update { (state) in
+      try mutation(&state)
     }
   }
   
